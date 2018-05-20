@@ -45,7 +45,7 @@ public class Main2Activity extends AppCompatActivity implements DragStateListene
 
     @Override
     public void onDragStart() {
-        
+
     }
 
     @Override
