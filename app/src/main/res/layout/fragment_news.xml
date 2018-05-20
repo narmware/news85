@@ -5,10 +5,9 @@
     tools:context="com.narmware.realpic.fragments.NewsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.alexvasilkov.foldablelayout.FoldableListLayout
+        android:id="@+id/foldable_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="@color/colorPrimary"
-        android:text="news" />
+        android:layout_height="wrap_content" />
 
 </FrameLayout>
