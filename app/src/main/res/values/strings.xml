@@ -2,6 +2,13 @@
     <string name="app_name">RealPic</string>
     <string name="title_activity_main2">Main2Activity</string>
 
+    <string name="youtube_api_key">AIzaSyBs8dcIDptCd4HYVQUS_PnRhTaJM42M7WQ</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="sample_title">जींद ज़िले में सहकारी बैंक द्वारा करीब 150 किसानों को क़र्ज़ की बकाया राशि की</string>
+    <string name="sample_body">एक ओर विजय माल्या और नीरव मोदी जैसे बड़े-बड़े उद्योगपति बैंकों का हजारों करोड़ रुपया डकारकर देश छोड़कर विदेश भाग चुके हैं तो दूसरी ओर देश के अन्नदाता,गरीब किसान से छोटे-मोटे कर्ज के वसूली के लिए बैंकों द्वारा उन्हें उनकी जमीन नीलाम करने के नोटिस थमाए जा रहे हैं. नीलाम करने के नोटिस थमाए जा रहे हैं. नीलाम करने के नोटिस थमाए जा रहे हैं. नीलाम करने के नोटिस थमाए जा रहे हैं. जमीन नीलाम करने के नोटिस थमाए जा रहे हैं. नीलाम करने के नोटिस थमाए जा रहे हैं. नीलाम करने के नोटिस थमाए जा रहे हैं. नीलाम करने के नोटिस थमाए जा रहे हैं.
+
+</string>
 </resources>

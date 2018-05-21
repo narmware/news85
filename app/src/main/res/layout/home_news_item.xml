@@ -1,40 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rltiv"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
       <ImageView
+          android:layout_alignParentTop="true"
           android:id="@+id/news_img"
           android:layout_width="match_parent"
-          android:layout_height="match_parent"
+          android:layout_height="@dimen/news_image_ht"
           android:background="@android:color/holo_blue_light"
-          android:layout_marginRight="10dp"
-          android:layout_marginLeft="10dp"
-          android:layout_marginTop="10dp"
-          android:layout_above="@+id/lnr"
           android:scaleType="fitXY"
           android:src="@mipmap/ic_launcher" />
 
-    <LinearLayout
-        android:id="@+id/lnr"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp">
+      <ImageView
+          android:id="@+id/img_play"
+          android:visibility="invisible"
+          android:layout_centerInParent="true"
+          app:srcCompat="@drawable/ic_play_circle_filled"
+          android:layout_width="50dp"
+          android:layout_height="50dp"
+          tools:ignore="VectorDrawableCompat" />
+      </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/news_bnr"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@android:color/holo_green_dark" />
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:paddingLeft="15dp"
+          android:paddingRight="15dp">
 
-    </LinearLayout>
+      <TextView
+          android:id="@+id/news_item_title"
+          android:text="@string/sample_title"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textColor="@android:color/black"
+          android:layout_marginTop="10dp"
+          android:paddingTop="3dp"
+          android:layout_marginBottom="10dp"
+          android:textSize="@dimen/news_title_ht"/>
 
-</RelativeLayout>
+      <TextView
+          android:id="@+id/news_item_desc"
+          android:textSize="@dimen/news_body_size"
+          android:text="@string/sample_body"
+          android:paddingTop="3dp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/hindi_body_font"
+          />
+
+      <TextView
+          android:id="@+id/news_item_date"
+          android:layout_marginTop="10dp"
+          android:textSize="11sp"
+          android:text="more on Hindustan Times / Today"
+          android:layout_width="wrap_content"
+          android:textColor="#e9e4e4"
+          android:layout_height="wrap_content" />
+      </LinearLayout>
+
+</LinearLayout>

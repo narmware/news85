@@ -3,11 +3,14 @@ package com.narmware.realpic.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.alexvasilkov.foldablelayout.FoldableListLayout;
 import com.android.volley.Request;
@@ -23,6 +26,7 @@ import com.narmware.realpic.apdapter.HomeNewsAdapter;
 import com.narmware.realpic.pojo.HomeNews;
 import com.narmware.realpic.pojo.HomePojoResponse;
 import com.narmware.realpic.support.EndPoint;
+import com.narmware.realpic.support.Support;
 
 import org.json.JSONObject;
 
@@ -44,6 +48,7 @@ public class NewsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    @BindView(R.id.empty_linear)protected LinearLayout mLinearEmpty;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -95,7 +100,12 @@ public class NewsFragment extends Fragment {
         mNewsList = mRoot.findViewById(R.id.foldable_list);
         fetchNews();
 
+        init(mRoot);
         return mRoot;
+    }
+
+    private void init(View view) {
+        ButterKnife.bind(this,view);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -169,9 +179,11 @@ public class NewsFragment extends Fragment {
                             Log.d("details ",item.getUrl());
 
                         }
-                        mHomeNewsAdapter = new HomeNewsAdapter(homeNewsPojos,getActivity());
-                        mNewsList.setAdapter(mHomeNewsAdapter);
-                        mHomeNewsAdapter.notifyDataSetChanged();
+
+                            mHomeNewsAdapter = new HomeNewsAdapter(homeNewsPojos, getActivity());
+                            mNewsList.setAdapter(mHomeNewsAdapter);
+                            mHomeNewsAdapter.notifyDataSetChanged();
+
 
                     }
 
@@ -182,6 +194,11 @@ public class NewsFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
                         Log.d("Details", error.toString());
+
+                        if(homeNewsPojos.size()==0)
+                        {
+                            mLinearEmpty.setVisibility(View.VISIBLE);
+                        }
                     }
                 });
 

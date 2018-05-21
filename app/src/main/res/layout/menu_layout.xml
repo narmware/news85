@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/colorAccent"
     android:orientation="vertical"
+    android:background="@drawable/menu_bg"
     android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#9fece9e9">
+
+        <ImageView
+            android:src="@drawable/ic_news_demo"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="10dp"
+            android:layout_above="@id/menu_list_root"/>
+    <LinearLayout
+        android:id="@+id/menu_list_root"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:padding="20dp">
 
 
     <Button
@@ -13,7 +33,8 @@
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="menu"/>
+        style="@style/menu_button"
+        android:text="News"/>
 
     <Button
         android:id="@+id/test2"
@@ -21,6 +42,28 @@
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="menu 2"/>
+        style="@style/menu_button"
+        android:text="About"/>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/test3"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/menu_button"
+            android:text="Privacy Policy"/>
+    </LinearLayout>
+
+
+        <FrameLayout
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="70dp">
+            <WebView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></WebView>
+        </FrameLayout>
+
+    </RelativeLayout>
+</FrameLayout>

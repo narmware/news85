@@ -11,6 +11,9 @@ public class HomeNews
     private String url;
     private String type;
     private String title;
+    private String description;
+    private String date_time;
+    private String src;
 
     public HomeNews(String id, String url, String type, String title) {
         this.id = id;
@@ -49,5 +52,21 @@ public class HomeNews
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDate_time(String date_time) {
+        this.date_time = date_time;
+    }
+
+    public String getDate_time() {
+        return date_time;
+    }
+
+    public String getSrc() {
+        return src;
     }
 }

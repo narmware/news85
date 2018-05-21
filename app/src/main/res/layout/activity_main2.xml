@@ -37,7 +37,8 @@
         android:layout_margin="@dimen/fab_margin"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@drawable/ic_share"
+        tools:ignore="VectorDrawableCompat" />
 
     </RelativeLayout>
 

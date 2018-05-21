@@ -1,13 +1,40 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.narmware.realpic.fragments.NewsFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <com.alexvasilkov.foldablelayout.FoldableListLayout
+        android:layout_above="@id/frame"
         android:id="@+id/foldable_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/empty_linear"
+        android:visibility="invisible"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_above="@id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_share"
+            />
+        <TextView
+            android:text="No news available"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/darker_gray"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"></FrameLayout>
+
+</RelativeLayout>

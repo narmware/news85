@@ -1,3 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="news_image_ht">230dp</dimen>
+    <dimen name="news_title_ht">19sp</dimen>
+    <dimen name="news_body_size">15sp</dimen>
+
 </resources>
