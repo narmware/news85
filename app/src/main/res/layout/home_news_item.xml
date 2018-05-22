@@ -16,9 +16,8 @@
           android:id="@+id/news_img"
           android:layout_width="match_parent"
           android:layout_height="@dimen/news_image_ht"
-          android:background="@android:color/holo_blue_light"
           android:scaleType="fitXY"
-          android:src="@mipmap/ic_launcher" />
+          />
 
       <ImageView
           android:id="@+id/img_play"

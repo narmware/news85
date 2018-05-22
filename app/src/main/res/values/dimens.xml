@@ -4,4 +4,10 @@
     <dimen name="news_title_ht">19sp</dimen>
     <dimen name="news_body_size">15sp</dimen>
 
+    <!-- dialog no connectivity -->
+    <dimen name="no_connect_img_margin_top">50dp</dimen>
+    <dimen name="no_connect_img_margin_height">150dp</dimen>
+    <dimen name="no_connect_img_margin_width">150dp</dimen>
+    <dimen name="no_connect_bottom_linear_margin">25dp</dimen>
+    <dimen name="no_connect_bottom_text_margin">10dp</dimen>
 </resources>

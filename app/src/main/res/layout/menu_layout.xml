@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
+    android:id="@+id/menu_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/menu_bg"
     android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/menu_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/menu_bg"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,7 +19,7 @@
         android:background="#9fece9e9">
 
         <ImageView
-            android:src="@drawable/ic_news_demo"
+            android:src="@drawable/bol85"
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:scaleType="fitXY"
@@ -28,7 +35,7 @@
 
 
     <Button
-        android:id="@+id/test"
+        android:id="@+id/btn_nav_news"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
@@ -37,7 +44,7 @@
         android:text="News"/>
 
     <Button
-        android:id="@+id/test2"
+        android:id="@+id/btn_nav_about"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
@@ -46,7 +53,7 @@
         android:text="About"/>
 
         <Button
-            android:id="@+id/test3"
+            android:id="@+id/btn_nav_privacy"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"

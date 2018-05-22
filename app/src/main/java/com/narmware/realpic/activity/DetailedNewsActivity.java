@@ -13,7 +13,12 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.narmware.realpic.R;
 import com.narmware.realpic.support.Support;
 
@@ -23,8 +28,9 @@ import butterknife.ButterKnife;
 public class DetailedNewsActivity extends AppCompatActivity {
 
     @BindView(R.id.webview)protected WebView mWebView;
-    protected ProgressDialog mProgress;
+    @BindView(R.id.web_progress) protected ProgressBar mProgress;
     String news_name,news_link;
+    InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,18 +46,15 @@ public class DetailedNewsActivity extends AppCompatActivity {
     private void init() {
         ButterKnife.bind(this);
 
+        setAds();
+
         setWebView();
         mWebView.loadUrl(news_link);
+
 
     }
 
     public void setWebView(){
-        mProgress = new ProgressDialog(DetailedNewsActivity.this);
-        mProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgress.setIndeterminate(true);
-        mProgress.setMessage("Loading...");
-        mProgress.setCancelable(false);
-     //   mProgress.show();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // chromium, enable hardware acceleration
@@ -85,6 +88,7 @@ public class DetailedNewsActivity extends AppCompatActivity {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+            mProgress.setVisibility(View.VISIBLE);
 
 
         }
@@ -107,9 +111,7 @@ public class DetailedNewsActivity extends AppCompatActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             Log.d("Page loaded : ", url);
-
-         //   mProgress.dismiss();
-
+            mProgress.setVisibility(View.INVISIBLE);
         }
 
         @Override
@@ -128,6 +130,55 @@ public class DetailedNewsActivity extends AppCompatActivity {
             //mHorizontalProgress.setProgress(progress);
 
 
+        }
+    }
+
+
+    public void setAds()
+    {
+        mInterstitialAd = new InterstitialAd(this);
+
+        // set the ad unit ID
+        mInterstitialAd.setAdUnitId(getString(R.string.fullscreen_ad));
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                // Check the LogCat to get your test device ID
+                .addTestDevice("F9105F730B0035B5B61A5B61AB57030E")
+                .build();
+
+        // Load ads into Interstitial Ads
+        mInterstitialAd.loadAd(adRequest);
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            public void onAdLoaded() {
+                showInterstitial();
+            }
+
+            @Override
+            public void onAdClosed() {
+                //Toast.makeText(FullScreenAdActivity.this, "Ad is closed!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                //Toast.makeText(DetailedNewsActivity.this, "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                //Toast.makeText(DetailedNewsActivity.this, "Ad left application!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+        });
+    }
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
         }
     }
 

@@ -1,6 +1,7 @@
 package com.narmware.realpic.activity;
 
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,13 +13,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.narmware.realpic.R;
 import com.narmware.realpic.fragments.AboutFragment;
 import com.narmware.realpic.fragments.NewsContainer;
 import com.narmware.realpic.fragments.NewsFragment;
+import com.narmware.realpic.fragments.WebviewFragment;
+import com.narmware.realpic.support.EndPoint;
 import com.narmware.realpic.support.Support;
+import com.squareup.picasso.Picasso;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 import com.yarolegovich.slidingrootnav.callback.DragStateListener;
@@ -30,20 +36,29 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity implements DragStateListener, NewsFragment.OnFragmentInteractionListener,
-        AboutFragment.OnFragmentInteractionListener, NewsContainer.OnFragmentInteractionListener{
+        AboutFragment.OnFragmentInteractionListener, WebviewFragment.OnFragmentInteractionListener{
 
     private SlidingRootNav slidingRootNav;
     private FragmentManager mFragmentManager;
-    protected Button test;
-    protected Button test2;
+    protected Button mBtnNavNews;
+    protected Button mBtnNavAbout;
+    protected Button mBtnNavPrivacy;
+    protected ImageView mBackImage;
  //   @BindView(R.id.fab)protected FloatingActionButton mFabShare;
 
     private void init() {
         ButterKnife.bind(this);
+        mBackImage = findViewById(R.id.menu_background);
 
+        Picasso.with(this)
+                .load(Support.MENU_BACKGROUND_URL)
+                .fit()
+                .centerCrop()
+                .placeholder(R.drawable.menu_bg)
+                .into(mBackImage);
 
-        test = findViewById(R.id.test);
-      test.setOnClickListener(new View.OnClickListener() {
+        mBtnNavNews = findViewById(R.id.btn_nav_news);
+        mBtnNavNews.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
               FragmentTransaction transaction = mFragmentManager.beginTransaction();
@@ -53,13 +68,25 @@ public class HomeActivity extends AppCompatActivity implements DragStateListener
           }
       });
 
-        test2 = findViewById(R.id.test2);
-        test2.setOnClickListener(new View.OnClickListener() {
+        mBtnNavAbout = findViewById(R.id.btn_nav_about);
+        mBtnNavAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Support.mt("About", HomeActivity.this);
+                //Support.mt("About", HomeActivity.this);
                 FragmentTransaction transaction = mFragmentManager.beginTransaction();
-                transaction.replace(R.id.fragment_container, AboutFragment.newInstance(null, null));
+                transaction.replace(R.id.fragment_container, WebviewFragment.newInstance(EndPoint.ABOUT_US_URL, null));
+                transaction.commit();
+                slidingRootNav.closeMenu();
+            }
+        });
+
+        mBtnNavPrivacy = findViewById(R.id.btn_nav_privacy);
+        mBtnNavPrivacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Support.mt("About", HomeActivity.this);
+                FragmentTransaction transaction = mFragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, WebviewFragment.newInstance(EndPoint.PRIVACY_POLICY_URL, null));
                 transaction.commit();
                 slidingRootNav.closeMenu();
             }
@@ -110,7 +137,7 @@ public class HomeActivity extends AppCompatActivity implements DragStateListener
 
     @Override
     public void onDragEnd(boolean isMenuOpened) {
-        Support.mt("Menu staus : " + isMenuOpened, HomeActivity.this);
+        //Support.mt("Menu staus : " + isMenuOpened, HomeActivity.this);
        /* if(isMenuOpened == true ) {
             test.setVisibility(View.VISIBLE);
         }

@@ -1,5 +1,6 @@
 package com.narmware.realpic.fragments;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -19,6 +21,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.narmware.realpic.R;
 import com.narmware.realpic.activity.HomeActivity;
@@ -61,6 +67,9 @@ public class NewsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private HomeNewsAdapter mHomeNewsAdapter;
     private RequestQueue mQueue;
+
+    protected Dialog mNoConnectionDialog;
+    private AdView mAdView;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -106,18 +115,17 @@ public class NewsFragment extends Fragment {
 
                 Log.d("PositionTop"," Position " + mNewsList.getPosition()) ;
 
-                int rotationInt = (int) rotation;
                 if (rotation % 180 == 0) {
                     try {
                         int position = mNewsList.getPosition();
                         int count = mNewsList.getCount();
 
                         Log.d("cnt_pos", "Count " + count + " Position " + position);
-                        if (position == count - 2) {
+                        if (position == count - 5) {
                             int id = SharedPreferenceHelper.getLatestNewsId(getActivity());
                             Log.d("Shared id", id + " ");
                             fetchNews(id);
-                            Support.mt("loaded " + id, getActivity());
+                            //Support.mt("loaded " + id, getActivity());
                         }
                     }catch (Exception e)
                     {
@@ -138,6 +146,8 @@ public class NewsFragment extends Fragment {
 
     private void init(View view) {
         ButterKnife.bind(this,view);
+        mAdView = (AdView) view.findViewById(R.id.adView);
+        setAds();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -183,7 +193,7 @@ public class NewsFragment extends Fragment {
     /*
     @params id Id of the latest news item
      */
-    public void fetchNews(int id)
+    public void fetchNews(final int id)
     {
         if (mQueue == null) {
             mQueue = Volley.newRequestQueue(getContext());
@@ -237,10 +247,98 @@ public class NewsFragment extends Fragment {
                         {
                             mLinearEmpty.setVisibility(View.VISIBLE);
                         }
+                        showNoConnectionDialog(id);
                     }
                 });
 
         mQueue.add(jsObjRequest);
 
+    }
+
+    private void showNoConnectionDialog(final int id) {
+        mNoConnectionDialog = new Dialog(getContext(), android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        mNoConnectionDialog.setContentView(R.layout.dialog_noconnectivity);
+        mNoConnectionDialog.setCancelable(false);
+        mNoConnectionDialog.show();
+
+        Button exit = mNoConnectionDialog.findViewById(R.id.dialog_no_connec_exit);
+        Button tryAgain = mNoConnectionDialog.findViewById(R.id.dialog_no_connec_try_again);
+
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+            }
+        });
+
+        tryAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fetchNews(id);
+                mNoConnectionDialog.dismiss();
+            }
+        });
+    }
+
+    public void setAds()
+    {
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                // Check the LogCat to get your test device ID
+                .addTestDevice("C04B1BFFB0774708339BC273F8A43708")
+                .build();
+
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+
+            @Override
+            public void onAdClosed() {
+                Toast.makeText(getContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                Toast.makeText(getContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                Toast.makeText(getContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+        });
+
+        mAdView.loadAd(adRequest);
+    }
+
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
     }
 }

@@ -8,4 +8,7 @@ public class EndPoint
 {
     public static final String BASE_URL="http://www.onlineshopee.co.in/realpic/api/";
     public static final String NEWS_URL = BASE_URL + "list.php";
+    public static final String PRIVACY_POLICY_URL ="http://www.onlineshopee.co.in/realpic/pages/privacy_policy.html";
+    public static final String ABOUT_US_URL ="http://www.onlineshopee.co.in/realpic/pages/about.html";
+
 }

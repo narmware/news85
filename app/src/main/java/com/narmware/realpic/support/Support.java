@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 public class Support {
 
+    public static final String MENU_BACKGROUND_URL = "http://onlineshopee.co.in/realpic/images/background.jpg";
     public static final String NEWS_TYPE_IMAGE = "0";
     public static final String NEWS_TYPE_YOUTUBE = "1";
 

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.narmware.realpic.R;
 import com.narmware.realpic.activity.DetailedNewsActivity;
+import com.narmware.realpic.activity.FullScreenAdActivity;
 import com.narmware.realpic.activity.SingleVideoActivity;
 import com.narmware.realpic.pojo.HomeNews;
 import com.narmware.realpic.pojo.VideoPojo2;
@@ -82,7 +83,7 @@ public class HomeNewsAdapter extends BaseAdapter
                     .load(mItemList.get(position).getImage_url())
                     .fit()
                     .centerCrop()
-                    .placeholder(R.drawable.ic_launcher_background)
+                    .placeholder(R.drawable.image_placeholder)
                     .into(mImgNews);
 
         }
@@ -94,7 +95,7 @@ public class HomeNewsAdapter extends BaseAdapter
                     .load("https://img.youtube.com/vi/" + videoId + "/0.jpg")
                     .fit()
                     .centerCrop()
-                    .placeholder(R.drawable.ic_launcher_background)
+                    .placeholder(R.drawable.image_placeholder)
                     .into(mImgNews);
         }
         SharedPreferenceHelper.setLatestNewsId(Integer.parseInt(mItemList.get(position).getId()), mContext);
@@ -104,11 +105,12 @@ public class HomeNewsAdapter extends BaseAdapter
             public void onClick(View v) {
 
                 if(mItemList.get(position).getType().equals(Support.NEWS_TYPE_IMAGE)) {
-                    Toast.makeText(mContext,"url: "+mItemList.get(position).getNews_url(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(mContext,"url: "+mItemList.get(position).getNews_url(), Toast.LENGTH_LONG).show();
 
                     Intent i = new Intent(mContext, DetailedNewsActivity.class);
                     i.putExtra(Support.NEWS_URL, mItemList.get(position).getNews_url() );
                     mContext.startActivity(i);
+
                 }
                 else {
                     mVideoId=VideoPojo2.getVideoId(mItemList.get(position).getImage_url());

@@ -2,6 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.narmware.realpic.fragments.NewsFragment">
 
@@ -23,18 +25,28 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/ic_share"
-            />
+            app:srcCompat="@drawable/ic_close"
+            tools:ignore="VectorDrawableCompat" />
         <TextView
             android:text="No news available"
+            android:textColor="@color/grey_600"
+            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
     <FrameLayout
         android:id="@+id/frame"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/darker_gray"
         android:layout_width="match_parent"
-        android:layout_height="60dp"></FrameLayout>
+        android:layout_height="60dp">
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="@string/banner_home_footer"
+            >
+        </com.google.android.gms.ads.AdView>
+    </FrameLayout>
 
 </RelativeLayout>

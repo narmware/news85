@@ -5,6 +5,9 @@ import android.os.Bundle;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -24,8 +27,10 @@ public class SingleVideoActivity extends YouTubeBaseActivity implements YouTubeP
     private MyPlayerStateChangeListener myPlayerStateChangeListener;
     private MyPlaybackEventListener myPlaybackEventListener;
 
+    InterstitialAd mInterstitialAd;
 
     private void init() {
+        setAds();
 
         Intent i = getIntent();
         VIDEO_ID = i.getStringExtra(Support.VIDEO_ID);
@@ -141,6 +146,51 @@ public class SingleVideoActivity extends YouTubeBaseActivity implements YouTubeP
     }
 
 
+    public void setAds()
+    {
+        mInterstitialAd = new InterstitialAd(this);
 
+        // set the ad unit ID
+        mInterstitialAd.setAdUnitId(getString(R.string.fullscreen_ad));
 
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                // Check the LogCat to get your test device ID
+                .addTestDevice("F9105F730B0035B5B61A5B61AB57030E")
+                .build();
+
+        // Load ads into Interstitial Ads
+        mInterstitialAd.loadAd(adRequest);
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            public void onAdLoaded() {
+                showInterstitial();
+            }
+
+            @Override
+            public void onAdClosed() {
+                //Toast.makeText(FullScreenAdActivity.this, "Ad is closed!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                //Toast.makeText(DetailedNewsActivity.this, "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                //Toast.makeText(DetailedNewsActivity.this, "Ad left application!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+        });
+    }
+    private void showInterstitial() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        }
+    }
 }
