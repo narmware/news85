@@ -8,7 +8,8 @@ public class HomeNews
 {
 
     private String id;
-    private String url;
+    private String image_url;
+    private String news_url;
     private String type;
     private String title;
     private String description;
@@ -17,7 +18,7 @@ public class HomeNews
 
     public HomeNews(String id, String url, String type, String title) {
         this.id = id;
-        this.url = url;
+        this.image_url = url;
         this.type = type;
         this.title = title;
     }
@@ -30,12 +31,12 @@ public class HomeNews
         this.id = id;
     }
 
-    public String getUrl() {
-        return url;
+    public String getImage_url() {
+        return image_url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setImage_url(String url) {
+        this.image_url = url;
     }
 
     public String getType() {
@@ -68,5 +69,13 @@ public class HomeNews
 
     public String getSrc() {
         return src;
+    }
+
+    public String getNews_url() {
+        return news_url;
+    }
+
+    public void setNews_url(String news_url) {
+        this.news_url = news_url;
     }
 }

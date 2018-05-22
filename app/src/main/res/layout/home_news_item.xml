@@ -64,7 +64,7 @@
           android:textSize="11sp"
           android:text="more on Hindustan Times / Today"
           android:layout_width="wrap_content"
-          android:textColor="#e9e4e4"
+          android:textColor="#d6d1d1"
           android:layout_height="wrap_content" />
       </LinearLayout>
 

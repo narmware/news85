@@ -36,7 +36,7 @@ public class HomeActivity extends AppCompatActivity implements DragStateListener
     private FragmentManager mFragmentManager;
     protected Button test;
     protected Button test2;
-    @BindView(R.id.fab)protected FloatingActionButton mFabShare;
+ //   @BindView(R.id.fab)protected FloatingActionButton mFabShare;
 
     private void init() {
         ButterKnife.bind(this);
@@ -65,7 +65,7 @@ public class HomeActivity extends AppCompatActivity implements DragStateListener
             }
         });
 
-        mFabShare.setOnClickListener(new View.OnClickListener() {
+        /*mFabShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String shareBody = "Hello,this is share msg";
@@ -75,7 +75,7 @@ public class HomeActivity extends AppCompatActivity implements DragStateListener
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent,"Share Using"));
             }
-        });
+        });*/
     }
 
     @Override

@@ -26,6 +26,7 @@ import com.narmware.realpic.apdapter.HomeNewsAdapter;
 import com.narmware.realpic.pojo.HomeNews;
 import com.narmware.realpic.pojo.HomePojoResponse;
 import com.narmware.realpic.support.EndPoint;
+import com.narmware.realpic.support.SharedPreferenceHelper;
 import com.narmware.realpic.support.Support;
 
 import org.json.JSONObject;
@@ -98,7 +99,38 @@ public class NewsFragment extends Fragment {
         // Inflate the layout for this fragment
         mRoot = inflater.inflate(R.layout.fragment_news, container, false);
         mNewsList = mRoot.findViewById(R.id.foldable_list);
-        fetchNews();
+        mNewsList.setOnFoldRotationListener(new FoldableListLayout.OnFoldRotationListener() {
+            @Override
+            public void onFoldRotation(float rotation, boolean isFromUser) {
+                Log.d("rotation", Float.toString(rotation) + " " + isFromUser);
+
+                Log.d("PositionTop"," Position " + mNewsList.getPosition()) ;
+
+                int rotationInt = (int) rotation;
+                if (rotation % 180 == 0) {
+                    try {
+                        int position = mNewsList.getPosition();
+                        int count = mNewsList.getCount();
+
+                        Log.d("cnt_pos", "Count " + count + " Position " + position);
+                        if (position == count - 2) {
+                            int id = SharedPreferenceHelper.getLatestNewsId(getActivity());
+                            Log.d("Shared id", id + " ");
+                            fetchNews(id);
+                            Support.mt("loaded " + id, getActivity());
+                        }
+                    }catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    //TODO
+                }
+            }
+        });
+
+        fetchNews(0);
 
         init(mRoot);
         return mRoot;
@@ -148,13 +180,16 @@ public class NewsFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void fetchNews()
+    /*
+    @params id Id of the latest news item
+     */
+    public void fetchNews(int id)
     {
         if (mQueue == null) {
             mQueue = Volley.newRequestQueue(getContext());
         }
 
-        String url= EndPoint.NEWS_URL+"?id";
+        String url= EndPoint.NEWS_URL+"?id="+id;
         Log.e("url",url);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>(){
@@ -164,27 +199,30 @@ public class NewsFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        Log.d("urlr", response.toString());
+                        try {
+                            Log.d("urlr", response.toString());
 
-                        Gson gson=new Gson();
-                        HomePojoResponse pojo1=gson.fromJson(response.toString(),HomePojoResponse.class);
+                            Gson gson = new Gson();
+                            HomePojoResponse pojo1 = gson.fromJson(response.toString(), HomePojoResponse.class);
 
-                        final HomeNews[] array=pojo1.getData();
-                        for(HomeNews item:array)
-                        {
-                            // String ImgId=item.getId();
+                            final HomeNews[] array = pojo1.getData();
+                            for (HomeNews item : array) {
+                                // String ImgId=item.getId();
 
-                            homeNewsPojos.add(item);
-                            Log.d("info",item.getId());
-                            Log.d("details ",item.getUrl());
+                                homeNewsPojos.add(item);
+                                Log.d("info", item.getId());
+                                Log.d("details ", item.getImage_url());
 
-                        }
+                            }
 
                             mHomeNewsAdapter = new HomeNewsAdapter(homeNewsPojos, getActivity());
                             mNewsList.setAdapter(mHomeNewsAdapter);
                             mHomeNewsAdapter.notifyDataSetChanged();
 
-
+                        }catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
 
 

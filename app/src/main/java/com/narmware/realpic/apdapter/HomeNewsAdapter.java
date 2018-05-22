@@ -12,9 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.narmware.realpic.R;
+import com.narmware.realpic.activity.DetailedNewsActivity;
 import com.narmware.realpic.activity.SingleVideoActivity;
 import com.narmware.realpic.pojo.HomeNews;
 import com.narmware.realpic.pojo.VideoPojo2;
+import com.narmware.realpic.support.SharedPreferenceHelper;
 import com.narmware.realpic.support.Support;
 import com.squareup.picasso.Picasso;
 
@@ -29,7 +31,7 @@ import butterknife.ButterKnife;
 
 public class HomeNewsAdapter extends BaseAdapter
 {
-    ArrayList<HomeNews> mItemList;
+    ArrayList<HomeNews> mItemList = new ArrayList<>();
     Context mContext;
     @BindView(R.id.news_img) protected ImageView mImgNews;
     @BindView(R.id.news_item_title) protected TextView mTitle;
@@ -77,7 +79,7 @@ public class HomeNewsAdapter extends BaseAdapter
             mImgPlay.setVisibility(View.INVISIBLE);
 
             Picasso.with(mContext)
-                    .load(mItemList.get(position).getUrl())
+                    .load(mItemList.get(position).getImage_url())
                     .fit()
                     .centerCrop()
                     .placeholder(R.drawable.ic_launcher_background)
@@ -86,7 +88,7 @@ public class HomeNewsAdapter extends BaseAdapter
         }
         else {
             mImgPlay.setVisibility(View.VISIBLE);
-            String videoId = VideoPojo2.getVideoId(mItemList.get(position).getUrl());
+            String videoId = VideoPojo2.getVideoId(mItemList.get(position).getImage_url());
 
             Picasso.with(mContext)
                     .load("https://img.youtube.com/vi/" + videoId + "/0.jpg")
@@ -95,16 +97,21 @@ public class HomeNewsAdapter extends BaseAdapter
                     .placeholder(R.drawable.ic_launcher_background)
                     .into(mImgNews);
         }
+        SharedPreferenceHelper.setLatestNewsId(Integer.parseInt(mItemList.get(position).getId()), mContext);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(mItemList.get(position).getType().equals(Support.NEWS_TYPE_IMAGE)) {
-                    Toast.makeText(mContext,"id"+mItemList.get(position).getUrl(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext,"url: "+mItemList.get(position).getNews_url(), Toast.LENGTH_LONG).show();
+
+                    Intent i = new Intent(mContext, DetailedNewsActivity.class);
+                    i.putExtra(Support.NEWS_URL, mItemList.get(position).getNews_url() );
+                    mContext.startActivity(i);
                 }
                 else {
-                    mVideoId=VideoPojo2.getVideoId(mItemList.get(position).getUrl());
+                    mVideoId=VideoPojo2.getVideoId(mItemList.get(position).getImage_url());
 
                     Intent i = new Intent(mContext, SingleVideoActivity.class);
                     i.putExtra(Support.VIDEO_ID, mVideoId );
