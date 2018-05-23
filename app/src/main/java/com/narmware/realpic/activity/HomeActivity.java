@@ -6,11 +6,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.narmware.realpic.MyApplication;
 import com.narmware.realpic.R;
 import com.narmware.realpic.fragments.AboutFragment;
@@ -39,6 +43,7 @@ public class HomeActivity extends AppCompatActivity implements DragStateListener
     private void init() {
         ButterKnife.bind(this);
         mBackImage = findViewById(R.id.menu_background);
+        subscribeToPushService();
 
         Picasso.with(this)
                 .load(Support.MENU_BACKGROUND_URL)
@@ -123,6 +128,15 @@ public class HomeActivity extends AppCompatActivity implements DragStateListener
         init();
 
     }
+
+    private void subscribeToPushService() {
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
+        Log.d("AndroidBash", "Subscribed");
+        String token = FirebaseInstanceId.getInstance().getToken();
+        // Log and toast
+        Log.d("AndroidBash", token);
+    }
+
 
     @Override
     protected void onResume() {
