@@ -121,7 +121,7 @@ public class NewsFragment extends Fragment {
                         int count = mNewsList.getCount();
 
                         Log.d("cnt_pos", "Count " + count + " Position " + position);
-                        if (position == count - 5) {
+                        if (position == count - 2) {
                             int id = SharedPreferenceHelper.getLatestNewsId(getActivity());
                             Log.d("Shared id", id + " ");
                             fetchNews(id);

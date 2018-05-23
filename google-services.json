@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "881825478668",
+    "firebase_url": "https://bol85-6ed4a.firebaseio.com",
+    "project_id": "bol85-6ed4a",
+    "storage_bucket": "bol85-6ed4a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881825478668:android:8eb046e25bc9793c",
+        "android_client_info": {
+          "package_name": "app.bol85.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "881825478668-bj94tv5o4e75d6b8ss7t60o6o2cgbnca.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCK_FCjbyiXUcGAyoBTEEyT_VeZn9Zo7s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

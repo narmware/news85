@@ -40,8 +40,9 @@
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         style="@style/menu_button"
-        android:text="News"/>
+        android:text="@string/hi_menu_news"/>
 
     <Button
         android:id="@+id/btn_nav_about"
@@ -50,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/menu_button"
-        android:text="About"/>
+        android:text="@string/hi_menu_about"/>
 
         <Button
             android:id="@+id/btn_nav_privacy"
@@ -59,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/menu_button"
-            android:text="Privacy Policy"/>
+            android:text="@string/hi_menu_privacy"/>
     </LinearLayout>
 
 

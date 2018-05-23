@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hi_menu_news">समाचार</string>
+    <string name="hi_menu_about">हमारे बारे में</string>
+    <string name="hi_menu_privacy">प्राइवेसी पालिसी</string>
+</resources>

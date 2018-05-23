@@ -1,25 +1,19 @@
 package com.narmware.realpic.activity;
 
-import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.narmware.realpic.MyApplication;
 import com.narmware.realpic.R;
 import com.narmware.realpic.fragments.AboutFragment;
-import com.narmware.realpic.fragments.NewsContainer;
 import com.narmware.realpic.fragments.NewsFragment;
 import com.narmware.realpic.fragments.WebviewFragment;
 import com.narmware.realpic.support.EndPoint;
@@ -29,10 +23,6 @@ import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 import com.yarolegovich.slidingrootnav.callback.DragStateListener;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity implements DragStateListener, NewsFragment.OnFragmentInteractionListener,
@@ -44,7 +34,7 @@ public class HomeActivity extends AppCompatActivity implements DragStateListener
     protected Button mBtnNavAbout;
     protected Button mBtnNavPrivacy;
     protected ImageView mBackImage;
- //   @BindView(R.id.fab)protected FloatingActionButton mFabShare;
+    private FirebaseAnalytics mFirebaseAnalytics;    //   @BindView(R.id.fab)protected FloatingActionButton mFabShare;
 
     private void init() {
         ButterKnife.bind(this);
@@ -111,6 +101,11 @@ public class HomeActivity extends AppCompatActivity implements DragStateListener
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+
+        // Obtain the shared Tracker instance.
+        MyApplication application = (MyApplication) getApplication();
 
         mFragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
@@ -127,7 +122,26 @@ public class HomeActivity extends AppCompatActivity implements DragStateListener
                 .inject();
         init();
 
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "0");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Activity ON");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "0");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Activity OFF");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     @Override
