@@ -1,8 +1,13 @@
 package com.narmware.realpic.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +16,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.ToxicBakery.viewpager.transforms.RotateDownTransformer;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -21,13 +29,15 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.narmware.realpic.R;
+import com.narmware.realpic.fragments.IntroductionFragment;
 import com.narmware.realpic.pojo.LoginData;
 import com.narmware.realpic.support.DatabaseAccess;
+import com.narmware.realpic.support.SharedPreferenceHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,IntroductionFragment.OnFragmentInteractionListener {
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 007;
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -38,16 +48,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     DatabaseAccess databaseAccess;
 
     @BindView(R.id.btn_signin) protected Button mBtnSignIn;
+    @BindView(R.id.intro_pager) protected ViewPager mViewPager;
+    PagerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().hide();
 
         init();
-
-        LoginData loginData=databaseAccess.getUserLogin();
-        Log.e("UserLogin data",loginData.getUser_name());
 
         mBtnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +73,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         databaseAccess= DatabaseAccess.getInstance(LoginActivity.this);
         databaseAccess.open();
 
+        YoYo.with(Techniques.FadeIn)
+                .duration(1000)
+                .playOn(mViewPager);
+
+        mAdapter=new PagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setPageTransformer(true, new RotateDownTransformer());
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -71,6 +89,38 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    public class PagerAdapter extends FragmentPagerAdapter {
+
+        public PagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int index) {
+
+            switch (index) {
+                case 0:
+                    return new IntroductionFragment().newInstance("title",R.drawable.bol85);
+                case 1:
+                    return new IntroductionFragment().newInstance("title1",R.drawable.bol85);
+                case 2:
+                    return new IntroductionFragment().newInstance("title2",R.drawable.bol85);
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            // get item count - equal to number of tabs
+            return 3;
+        }
     }
 
 
@@ -129,17 +179,23 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     personPhotoUrl="http://narmware.com/kp/avatar.png";
                 }
                 else {
-                    databaseAccess.setUserLogin(personName, email, personPhotoUrl);
 
                 }
-               // new SendLogin().execute();
+
+                if(SharedPreferenceHelper.getIsLogin(LoginActivity.this)==false)
+                {
+                    databaseAccess.setUserLogin(personName, email, personPhotoUrl);
+                    SharedPreferenceHelper.setIsLogin(true,LoginActivity.this);
+                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                    finish();
+                }
 
             }
 
 
         } else {
             // Signed out, show unauthenticated UI.
-            //SharedPreferencesHelper.setLogin(false,LoginActivity.this);
+            SharedPreferenceHelper.setIsLogin(false,LoginActivity.this);
 
         }
     }

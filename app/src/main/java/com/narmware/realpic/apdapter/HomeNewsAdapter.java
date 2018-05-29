@@ -82,7 +82,6 @@ public class HomeNewsAdapter extends BaseAdapter
             Picasso.with(mContext)
                     .load(mItemList.get(position).getImage_url())
                     .fit()
-                    .centerCrop()
                     .placeholder(R.drawable.image_placeholder)
                     .into(mImgNews);
 
@@ -94,7 +93,6 @@ public class HomeNewsAdapter extends BaseAdapter
             Picasso.with(mContext)
                     .load("https://img.youtube.com/vi/" + videoId + "/0.jpg")
                     .fit()
-                    .centerCrop()
                     .placeholder(R.drawable.image_placeholder)
                     .into(mImgNews);
         }
@@ -107,9 +105,15 @@ public class HomeNewsAdapter extends BaseAdapter
                 if(mItemList.get(position).getType().equals(Support.NEWS_TYPE_IMAGE)) {
                     //Toast.makeText(mContext,"url: "+mItemList.get(position).getNews_url(), Toast.LENGTH_LONG).show();
 
-                    Intent i = new Intent(mContext, DetailedNewsActivity.class);
-                    i.putExtra(Support.NEWS_URL, mItemList.get(position).getNews_url() );
-                    mContext.startActivity(i);
+                    if(mItemList.get(position).getNews_url().equals(""))
+                    {
+
+                    }
+                    if(!mItemList.get(position).getNews_url().equals("")){
+                        Intent i = new Intent(mContext, DetailedNewsActivity.class);
+                        i.putExtra(Support.NEWS_URL, mItemList.get(position).getNews_url() );
+                        mContext.startActivity(i);
+                    }
 
                 }
                 else {

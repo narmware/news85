@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 
 public class SharedPreferenceHelper {
     private static String LAST_NEWS_ID = "news_id";
+    private static String IS_LOGIN = "login";
 
 
     public static void setLatestNewsId(int id, Context context) {
@@ -25,4 +26,15 @@ public class SharedPreferenceHelper {
     }
 
 
+    public static void setIsLogin(boolean login, Context context) {
+        SharedPreferences manager = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = manager.edit();
+        editor.putBoolean(IS_LOGIN, login);
+        editor.commit();
+    }
+
+    public static boolean getIsLogin(Context context) {
+        SharedPreferences manager = PreferenceManager.getDefaultSharedPreferences(context);
+        return manager.getBoolean(IS_LOGIN, false);
+    }
 }

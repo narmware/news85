@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.narmware.realpic.R;
+import com.narmware.realpic.support.SharedPreferenceHelper;
 
 public class SplashActivity extends AppCompatActivity {
     private static int TIMEOUT = 1400;
@@ -25,8 +26,16 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
 
 
+                if(SharedPreferenceHelper.getIsLogin(SplashActivity.this)==false)
+                {
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                    finish();
+                }
+                else {
                     startActivity(new Intent(SplashActivity.this, HomeActivity.class));
                     finish();
+                }
+
 
             }
         }, TIMEOUT);

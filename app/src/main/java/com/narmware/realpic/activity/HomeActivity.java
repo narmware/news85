@@ -134,7 +134,7 @@ public class HomeActivity extends AppCompatActivity implements DragStateListener
         Log.d("AndroidBash", "Subscribed");
         String token = FirebaseInstanceId.getInstance().getToken();
         // Log and toast
-        Log.d("AndroidBash", token);
+   //     Log.d("AndroidBash", token);
     }
 
 
