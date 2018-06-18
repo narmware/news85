@@ -8,11 +8,12 @@
     tools:context="com.narmware.realpic.fragments.NewsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <com.alexvasilkov.foldablelayout.FoldableListLayout
+    <android.support.v4.view.ViewPager
         android:layout_above="@id/frame"
-        android:id="@+id/foldable_list"
+        android:id="@+id/news_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 
     <LinearLayout
         android:id="@+id/empty_linear"

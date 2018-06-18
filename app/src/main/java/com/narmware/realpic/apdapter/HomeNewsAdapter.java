@@ -57,7 +57,7 @@ public class HomeNewsAdapter extends BaseAdapter
     @BindView(R.id.news_item_desc)protected TextView mDescription;
     @BindView(R.id.news_item_date)protected TextView mDateStamp;
     @BindView(R.id.img_play)protected ImageView mImgPlay;
-    @BindView(R.id.share) protected ImageButton mShare;
+   // @BindView(R.id.share) protected ImageButton mShare;
     String mVideoId;
 
 
@@ -98,7 +98,7 @@ public class HomeNewsAdapter extends BaseAdapter
         mTitle.setText(mItemList.get(position).getTitle());
         mDescription.setText(mItemList.get(position).getDescription());
         mDateStamp.setText(mItemList.get(position).getSrc());
-        mShare.setOnClickListener(new View.OnClickListener() {
+       /* mShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -112,7 +112,7 @@ public class HomeNewsAdapter extends BaseAdapter
 
                 // If you want to share a png image only, you can do:
                 // setType("image/png"); OR for jpeg: setType("image/jpeg");
-                share.setType("image/*");
+                share.setType("image*//*");
 
                 Uri uri = Uri.fromFile(path);
                 share.putExtra(Intent.EXTRA_STREAM, uri);
@@ -120,7 +120,7 @@ public class HomeNewsAdapter extends BaseAdapter
 
                 mContext.startActivity(Intent.createChooser(share, "Share Now"));
             }
-        });
+        });*/
 
         if(mItemList.get(position).getType().equals(Support.NEWS_TYPE_IMAGE)) {
             mImgPlay.setVisibility(View.INVISIBLE);

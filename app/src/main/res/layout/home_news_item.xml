@@ -59,7 +59,7 @@
                       android:textSize="@dimen/news_title_ht"
                        />
 
-                  <ImageButton
+                <!--  <ImageButton
                       android:id="@+id/share"
                       android:src="@drawable/ic_share"
                       android:background="@android:color/transparent"
@@ -67,7 +67,7 @@
                       android:layout_marginLeft="5dp"
                       android:layout_gravity="top"
                       android:layout_width="wrap_content"
-                      android:layout_height="wrap_content" />
+                      android:layout_height="wrap_content" />-->
 
             </LinearLayout>
 

@@ -6,6 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.ToxicBakery.viewpager.transforms.DepthPageTransformer;
+import com.ToxicBakery.viewpager.transforms.RotateDownTransformer;
+import com.ToxicBakery.viewpager.transforms.StackTransformer;
 import com.alexvasilkov.foldablelayout.FoldableListLayout;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,6 +34,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.narmware.realpic.R;
 import com.narmware.realpic.activity.HomeActivity;
+import com.narmware.realpic.activity.LoginActivity;
 import com.narmware.realpic.apdapter.HomeNewsAdapter;
 import com.narmware.realpic.pojo.HomeNews;
 import com.narmware.realpic.pojo.HomePojoResponse;
@@ -38,6 +45,7 @@ import com.narmware.realpic.support.Support;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,8 +69,10 @@ public class NewsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private View mRoot;
-   protected FoldableListLayout mNewsList;
+   //protected FoldableListLayout mNewsList;
     ArrayList<HomeNews> homeNewsPojos = new ArrayList<>();
+    ViewPager newsPager;
+    PagerAdapter mAdapter;
 
     private OnFragmentInteractionListener mListener;
     private HomeNewsAdapter mHomeNewsAdapter;
@@ -107,8 +117,8 @@ public class NewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mRoot = inflater.inflate(R.layout.fragment_news, container, false);
-        mNewsList = mRoot.findViewById(R.id.foldable_list);
-        mNewsList.setOnFoldRotationListener(new FoldableListLayout.OnFoldRotationListener() {
+        newsPager = mRoot.findViewById(R.id.news_pager);
+       /* mNewsList.setOnFoldRotationListener(new FoldableListLayout.OnFoldRotationListener() {
             @Override
             public void onFoldRotation(float rotation, boolean isFromUser) {
                 Log.d("rotation", Float.toString(rotation) + " " + isFromUser);
@@ -137,11 +147,62 @@ public class NewsFragment extends Fragment {
                 }
             }
         });
+*/
+       mAdapter=new PagerAdapter(getActivity().getSupportFragmentManager(),getContext());
+       newsPager.setAdapter(mAdapter);
+       newsPager.setPageTransformer(true, new DepthPageTransformer());
+       newsPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+           @Override
+           public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+           }
+
+           @Override
+           public void onPageSelected(int position) {
+
+               if(position == homeNewsPojos.size()-1) {
+                   fetchNews(Integer.parseInt(homeNewsPojos.get(position).getId()));
+                   //Toast.makeText(getContext(), "Id: " + homeNewsPojos.get(position).getId(), Toast.LENGTH_SHORT).show();
+               }
+           }
+
+           @Override
+           public void onPageScrollStateChanged(int state) {
+
+           }
+       });
 
         fetchNews(0);
 
         init(mRoot);
         return mRoot;
+    }
+
+    public class PagerAdapter extends FragmentPagerAdapter {
+
+        Context context;
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+
+        public PagerAdapter(FragmentManager fm,Context mContext) {
+            super(fm);
+            this.context=mContext;
+        }
+
+        @Override
+        public Fragment getItem(int index) {
+
+            return mFragmentList.get(index);
+        }
+
+        @Override
+        public int getCount() {
+            // get item count - equal to number of tabs
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment) {
+            mFragmentList.add(fragment);
+        }
     }
 
     private void init(View view) {
@@ -220,14 +281,16 @@ public class NewsFragment extends Fragment {
                                 // String ImgId=item.getId();
 
                                 homeNewsPojos.add(item);
-                                Log.d("info", item.getId());
-                                Log.d("details ", item.getImage_url());
-
+                                mAdapter.addFragment(SingleNewsFragment.newInstance(item.getTitle(),item.getDescription(),item.getImage_url(),
+                                        item.getSrc(),item.getType(),item.getNews_url()));
+                                Log.d("pojo details ", item.getTitle()+" "+item.getId());
                             }
 
-                            mHomeNewsAdapter = new HomeNewsAdapter(homeNewsPojos, getActivity());
-                            mNewsList.setAdapter(mHomeNewsAdapter);
-                            mHomeNewsAdapter.notifyDataSetChanged();
+                            mAdapter.notifyDataSetChanged();
+
+                            //mHomeNewsAdapter = new HomeNewsAdapter(homeNewsPojos, getActivity());
+                            //mNewsList.setAdapter(mHomeNewsAdapter);
+                            //mHomeNewsAdapter.notifyDataSetChanged();
 
                         }catch (Exception e)
                         {

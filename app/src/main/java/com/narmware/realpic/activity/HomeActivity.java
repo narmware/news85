@@ -19,6 +19,7 @@ import com.narmware.realpic.MyApplication;
 import com.narmware.realpic.R;
 import com.narmware.realpic.fragments.AboutFragment;
 import com.narmware.realpic.fragments.NewsFragment;
+import com.narmware.realpic.fragments.SingleNewsFragment;
 import com.narmware.realpic.fragments.WebviewFragment;
 import com.narmware.realpic.support.EndPoint;
 import com.narmware.realpic.support.Support;
@@ -30,7 +31,7 @@ import com.yarolegovich.slidingrootnav.callback.DragStateListener;
 import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity implements DragStateListener, NewsFragment.OnFragmentInteractionListener,
-        AboutFragment.OnFragmentInteractionListener, WebviewFragment.OnFragmentInteractionListener{
+        AboutFragment.OnFragmentInteractionListener, WebviewFragment.OnFragmentInteractionListener,SingleNewsFragment.OnFragmentInteractionListener{
 
     private SlidingRootNav slidingRootNav;
     private FragmentManager mFragmentManager;
