@@ -1,8 +1,10 @@
 package com.narmware.realpic.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +19,12 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.ToxicBakery.viewpager.transforms.RotateDownTransformer;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.auth.api.Auth;
@@ -28,11 +36,30 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.gson.Gson;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.karumi.dexter.listener.single.PermissionListener;
+import com.narmware.realpic.Manifest;
+import com.narmware.realpic.MyApplication;
 import com.narmware.realpic.R;
 import com.narmware.realpic.fragments.IntroductionFragment;
+import com.narmware.realpic.pojo.Login;
 import com.narmware.realpic.pojo.LoginData;
 import com.narmware.realpic.support.DatabaseAccess;
+import com.narmware.realpic.support.EndPoint;
 import com.narmware.realpic.support.SharedPreferenceHelper;
+import com.narmware.realpic.support.SupportFunctions;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,12 +77,26 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @BindView(R.id.btn_signin) protected Button mBtnSignIn;
     @BindView(R.id.intro_pager) protected ViewPager mViewPager;
     PagerAdapter mAdapter;
+    RequestQueue mVolleyRequest;
 
+    private void requestPermission() {
+        Dexter.withActivity(this)
+                .withPermissions(
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+
+                ).withListener(new MultiplePermissionsListener() {
+            @Override public void onPermissionsChecked(MultiplePermissionsReport report) {/* ... */}
+            @Override public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {/* ... */}
+        }).check();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
+
+        requestPermission();
 
         init();
 
@@ -69,6 +110,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void init() {
         ButterKnife.bind(this);
+        mVolleyRequest = Volley.newRequestQueue(LoginActivity.this);
 
         databaseAccess= DatabaseAccess.getInstance(LoginActivity.this);
         databaseAccess.open();
@@ -185,6 +227,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 if(SharedPreferenceHelper.getIsLogin(LoginActivity.this)==false)
                 {
                     databaseAccess.setUserLogin(personName, email, personPhotoUrl);
+                    RegisetrUser();
                     SharedPreferenceHelper.setIsLogin(true,LoginActivity.this);
                     startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                     finish();
@@ -245,5 +288,66 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 
+    private void RegisetrUser() {
+
+
+        Gson gson=new Gson();
+
+        Login login=new Login();
+        login.setName(personName);
+        login.setEmail(email);
+        login.setPhoto(personPhotoUrl);
+
+        String json_string=gson.toJson(login);
+
+        HashMap<String,String> param = new HashMap();
+        param.put(EndPoint.JSON_STRING,json_string);
+
+        //url with params
+        String url= SupportFunctions.appendParam(EndPoint.LOGIN,param);
+
+        //url without params
+        //String url= MyApplication.GET_CATEGORIES;
+
+        Log.e("Login url",url);
+        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET,url,null,
+                // The third parameter Listener overrides the method onResponse() and passes
+                //JSONObject as a parameter
+                new Response.Listener<JSONObject>() {
+
+                    // Takes the response from the JSON request
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try
+                        {
+                            //getting test master array
+                            // testMasterDetails = testMasterArray.toString();
+
+                            Log.e("Login Json_string",response.toString());
+                            Gson gson = new Gson();
+
+
+                        } catch (Exception e) {
+
+                            e.printStackTrace();
+                            //Toast.makeText(NavigationActivity.this, "Invalid album id", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                // The final parameter overrides the method onErrorResponse() and passes VolleyError
+                //as a parameter
+                new Response.ErrorListener() {
+                    @Override
+                    // Handles errors that occur due to Volley
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Volley", "Test Error");
+                        // showNoConnectionDialog();
+
+                    }
+                }
+        );
+        mVolleyRequest.add(obreq);
+    }
 
 }

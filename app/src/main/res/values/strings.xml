@@ -15,4 +15,5 @@
 
     <string name="banner_home_footer">ca-app-pub-5944898483725040/1722111219</string>
     <string name="fullscreen_ad">ca-app-pub-5944898483725040/6607320978</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

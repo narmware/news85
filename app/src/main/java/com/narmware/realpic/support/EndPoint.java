@@ -10,5 +10,8 @@ public class EndPoint
     public static final String NEWS_URL = BASE_URL + "list.php";
     public static final String PRIVACY_POLICY_URL ="http://www.onlineshopee.co.in/realpic/pages/privacy_policy.html";
     public static final String ABOUT_US_URL ="http://www.onlineshopee.co.in/realpic/pages/about.html";
+    public static final String LOGIN =BASE_URL+"registerUser.php";
+
+    public static final String JSON_STRING ="json_string";
 
 }
