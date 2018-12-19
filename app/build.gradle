@@ -7,8 +7,8 @@ android {
         minSdkVersion 16
         targetSdkVersion 27
         multiDexEnabled true
-        versionCode 6
-        versionName "beta 6"
+        versionCode 14
+        versionName "beta 14"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -31,6 +31,7 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.google.firebase:firebase-core:11.0.4'
+    implementation 'com.google.android.gms:play-services-maps:11.0.4'
     compile 'com.google.firebase:firebase-messaging:11.0.4'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
@@ -58,6 +59,10 @@ dependencies {
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     compile 'com.android.support:cardview-v7:27.1.1'
     compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
+    implementation 'com.karumi:dexter:4.2.0'
+    compile 'com.wang.avi:library:2.1.3'
+    compile 'de.hdodenhof:circleimageview:2.2.0'
+
 }
 
 

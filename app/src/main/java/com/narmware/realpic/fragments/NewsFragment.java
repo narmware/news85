@@ -6,6 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +18,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.ToxicBakery.viewpager.transforms.DepthPageTransformer;
+import com.ToxicBakery.viewpager.transforms.RotateDownTransformer;
+import com.ToxicBakery.viewpager.transforms.StackTransformer;
 import com.alexvasilkov.foldablelayout.FoldableListLayout;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,16 +35,19 @@ import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.narmware.realpic.R;
 import com.narmware.realpic.activity.HomeActivity;
+import com.narmware.realpic.activity.LoginActivity;
 import com.narmware.realpic.apdapter.HomeNewsAdapter;
 import com.narmware.realpic.pojo.HomeNews;
 import com.narmware.realpic.pojo.HomePojoResponse;
 import com.narmware.realpic.support.EndPoint;
 import com.narmware.realpic.support.SharedPreferenceHelper;
 import com.narmware.realpic.support.Support;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,20 +66,23 @@ public class NewsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     @BindView(R.id.empty_linear)protected LinearLayout mLinearEmpty;
+    @BindView(R.id.avi)protected AVLoadingIndicatorView avi;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private View mRoot;
-   protected FoldableListLayout mNewsList;
+   //protected FoldableListLayout mNewsList;
     ArrayList<HomeNews> homeNewsPojos = new ArrayList<>();
+    ViewPager newsPager;
+    PagerAdapter mAdapter;
 
     private OnFragmentInteractionListener mListener;
     private HomeNewsAdapter mHomeNewsAdapter;
     private RequestQueue mQueue;
 
     protected Dialog mNoConnectionDialog;
-    private AdView mAdView;
+   // private AdView mAdView;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -107,36 +120,34 @@ public class NewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mRoot = inflater.inflate(R.layout.fragment_news, container, false);
-        mNewsList = mRoot.findViewById(R.id.foldable_list);
-        mNewsList.setOnFoldRotationListener(new FoldableListLayout.OnFoldRotationListener() {
-            @Override
-            public void onFoldRotation(float rotation, boolean isFromUser) {
-                Log.d("rotation", Float.toString(rotation) + " " + isFromUser);
+        ButterKnife.bind(this,mRoot);
 
-                Log.d("PositionTop"," Position " + mNewsList.getPosition()) ;
+        newsPager = mRoot.findViewById(R.id.news_pager);
 
-                if (rotation % 180 == 0) {
-                    try {
-                        int position = mNewsList.getPosition();
-                        int count = mNewsList.getCount();
+       mAdapter=new PagerAdapter(getActivity().getSupportFragmentManager(),getContext());
+       newsPager.setAdapter(mAdapter);
+       newsPager.setPageTransformer(true, new DepthPageTransformer());
+       mAdapter.notifyDataSetChanged();
+        newsPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+           @Override
+           public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                        Log.d("cnt_pos", "Count " + count + " Position " + position);
-                        if (position == count - 2) {
-                            int id = SharedPreferenceHelper.getLatestNewsId(getActivity());
-                            Log.d("Shared id", id + " ");
-                            fetchNews(id);
-                            //Support.mt("loaded " + id, getActivity());
-                        }
-                    }catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    //TODO
-                }
-            }
-        });
+           }
+
+           @Override
+           public void onPageSelected(int position) {
+
+               if(position == homeNewsPojos.size()-1) {
+                   fetchNews(Integer.parseInt(homeNewsPojos.get(position).getId()));
+                   //Toast.makeText(getContext(), "Id: " + homeNewsPojos.get(position).getId(), Toast.LENGTH_SHORT).show();
+               }
+           }
+
+           @Override
+           public void onPageScrollStateChanged(int state) {
+
+           }
+       });
 
         fetchNews(0);
 
@@ -144,10 +155,37 @@ public class NewsFragment extends Fragment {
         return mRoot;
     }
 
+    public class PagerAdapter extends FragmentStatePagerAdapter {
+
+        Context context;
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+
+        public PagerAdapter(FragmentManager fm,Context mContext) {
+            super(fm);
+            this.context=mContext;
+        }
+
+        @Override
+        public Fragment getItem(int index) {
+
+            return mFragmentList.get(index);
+        }
+
+        @Override
+        public int getCount() {
+            // get item count - equal to number of tabs
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment) {
+            mFragmentList.add(fragment);
+        }
+    }
+
     private void init(View view) {
         ButterKnife.bind(this,view);
-        mAdView = (AdView) view.findViewById(R.id.adView);
-        setAds();
+        //mAdView = (AdView) view.findViewById(R.id.adView);
+        //setAds();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -195,6 +233,8 @@ public class NewsFragment extends Fragment {
      */
     public void fetchNews(final int id)
     {
+        avi.show();
+
         if (mQueue == null) {
             mQueue = Volley.newRequestQueue(getContext());
         }
@@ -220,18 +260,22 @@ public class NewsFragment extends Fragment {
                                 // String ImgId=item.getId();
 
                                 homeNewsPojos.add(item);
-                                Log.d("info", item.getId());
-                                Log.d("details ", item.getImage_url());
-
+                                mAdapter.addFragment(SingleNewsFragment.newInstance(item.getTitle(),item.getDescription(),item.getImage_url(),
+                                        item.getSrc(),item.getType(),item.getNews_url()));
+                                Log.d("pojo details ", item.getTitle()+" "+item.getId());
                             }
 
-                            mHomeNewsAdapter = new HomeNewsAdapter(homeNewsPojos, getActivity());
-                            mNewsList.setAdapter(mHomeNewsAdapter);
-                            mHomeNewsAdapter.notifyDataSetChanged();
+                            mAdapter.notifyDataSetChanged();
+                            avi.hide();
+                            //mHomeNewsAdapter = new HomeNewsAdapter(homeNewsPojos, getActivity());
+                            //mNewsList.setAdapter(mHomeNewsAdapter);
+                            //mHomeNewsAdapter.notifyDataSetChanged();
 
                         }catch (Exception e)
                         {
                             e.printStackTrace();
+                            avi.hide();
+
                         }
                     }
 
@@ -246,6 +290,7 @@ public class NewsFragment extends Fragment {
                         if(homeNewsPojos.size()==0)
                         {
                             mLinearEmpty.setVisibility(View.VISIBLE);
+                            avi.hide();
                         }
                         showNoConnectionDialog(id);
                     }
@@ -280,7 +325,7 @@ public class NewsFragment extends Fragment {
         });
     }
 
-    public void setAds()
+   /* public void setAds()
     {
 
         AdRequest adRequest = new AdRequest.Builder()
@@ -317,28 +362,28 @@ public class NewsFragment extends Fragment {
 
         mAdView.loadAd(adRequest);
     }
-
+*/
     @Override
     public void onPause() {
-        if (mAdView != null) {
+       /* if (mAdView != null) {
             mAdView.pause();
-        }
+        }*/
         super.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mAdView != null) {
+     /*   if (mAdView != null) {
             mAdView.resume();
-        }
+        }*/
     }
 
     @Override
     public void onDestroy() {
-        if (mAdView != null) {
+     /*   if (mAdView != null) {
             mAdView.destroy();
-        }
+        }*/
         super.onDestroy();
     }
 }
