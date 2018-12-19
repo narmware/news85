@@ -228,7 +228,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 if(SharedPreferenceHelper.getIsLogin(LoginActivity.this)==false)
                 {
                     databaseAccess.setUserLogin(personName, email, personPhotoUrl);
-                    RegisetrUser();
+                    registerUser();
                     SharedPreferenceHelper.setIsLogin(true,LoginActivity.this);
                     SharedPreferenceHelper.setUserImage(personPhotoUrl,LoginActivity.this);
                     SharedPreferenceHelper.setUserName(email,LoginActivity.this);
@@ -292,7 +292,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 
-    private void RegisetrUser() {
+    private void registerUser() {
 
 
         Gson gson=new Gson();
