@@ -81,7 +81,6 @@
           android:paddingTop="3dp"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:fontFamily="@font/hindi_body_font"
           />
 
       <TextView

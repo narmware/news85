@@ -38,14 +38,6 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.gson.Gson;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.karumi.dexter.listener.single.PermissionListener;
 import com.narmware.realpic.Manifest;
 import com.narmware.realpic.MyApplication;
 import com.narmware.realpic.R;
@@ -81,15 +73,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     RequestQueue mVolleyRequest;
 
     private void requestPermission() {
-        Dexter.withActivity(this)
+       /* Dexter.withActivity(this)
                 .withPermissions(
                         android.Manifest.permission.READ_EXTERNAL_STORAGE,
                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 
                 ).withListener(new MultiplePermissionsListener() {
-            @Override public void onPermissionsChecked(MultiplePermissionsReport report) {/* ... */}
-            @Override public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {/* ... */}
-        }).check();
+            @Override public void onPermissionsChecked(MultiplePermissionsReport report) {*//* ... *//*}
+            @Override public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {*//* ... *//*}
+        }).check();*/
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
