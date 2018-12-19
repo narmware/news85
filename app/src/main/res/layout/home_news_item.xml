@@ -93,5 +93,4 @@
           android:textColor="#d6d1d1"
           android:layout_height="wrap_content" />
       </LinearLayout>
-
 </LinearLayout>

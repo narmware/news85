@@ -2,6 +2,7 @@ package com.narmware.realpic.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.SyncStateContract;
@@ -229,6 +230,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     databaseAccess.setUserLogin(personName, email, personPhotoUrl);
                     RegisetrUser();
                     SharedPreferenceHelper.setIsLogin(true,LoginActivity.this);
+                    SharedPreferenceHelper.setUserImage(personPhotoUrl,LoginActivity.this);
+                    SharedPreferenceHelper.setUserName(email,LoginActivity.this);
+
                     startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                     finish();
                 }

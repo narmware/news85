@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ import com.narmware.realpic.pojo.HomePojoResponse;
 import com.narmware.realpic.support.EndPoint;
 import com.narmware.realpic.support.SharedPreferenceHelper;
 import com.narmware.realpic.support.Support;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONObject;
 
@@ -64,6 +66,7 @@ public class NewsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     @BindView(R.id.empty_linear)protected LinearLayout mLinearEmpty;
+    @BindView(R.id.avi)protected AVLoadingIndicatorView avi;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -79,7 +82,7 @@ public class NewsFragment extends Fragment {
     private RequestQueue mQueue;
 
     protected Dialog mNoConnectionDialog;
-    private AdView mAdView;
+   // private AdView mAdView;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -117,41 +120,15 @@ public class NewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mRoot = inflater.inflate(R.layout.fragment_news, container, false);
+        ButterKnife.bind(this,mRoot);
+
         newsPager = mRoot.findViewById(R.id.news_pager);
-       /* mNewsList.setOnFoldRotationListener(new FoldableListLayout.OnFoldRotationListener() {
-            @Override
-            public void onFoldRotation(float rotation, boolean isFromUser) {
-                Log.d("rotation", Float.toString(rotation) + " " + isFromUser);
 
-                Log.d("PositionTop"," Position " + mNewsList.getPosition()) ;
-
-                if (rotation % 180 == 0) {
-                    try {
-                        int position = mNewsList.getPosition();
-                        int count = mNewsList.getCount();
-
-                        Log.d("cnt_pos", "Count " + count + " Position " + position);
-                        if (position == count - 2) {
-                            int id = SharedPreferenceHelper.getLatestNewsId(getActivity());
-                            Log.d("Shared id", id + " ");
-                            fetchNews(id);
-                            //Support.mt("loaded " + id, getActivity());
-                        }
-                    }catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    //TODO
-                }
-            }
-        });
-*/
        mAdapter=new PagerAdapter(getActivity().getSupportFragmentManager(),getContext());
        newsPager.setAdapter(mAdapter);
        newsPager.setPageTransformer(true, new DepthPageTransformer());
-       newsPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+       mAdapter.notifyDataSetChanged();
+        newsPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
            @Override
            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -178,7 +155,7 @@ public class NewsFragment extends Fragment {
         return mRoot;
     }
 
-    public class PagerAdapter extends FragmentPagerAdapter {
+    public class PagerAdapter extends FragmentStatePagerAdapter {
 
         Context context;
         private final List<Fragment> mFragmentList = new ArrayList<>();
@@ -207,8 +184,8 @@ public class NewsFragment extends Fragment {
 
     private void init(View view) {
         ButterKnife.bind(this,view);
-        mAdView = (AdView) view.findViewById(R.id.adView);
-        setAds();
+        //mAdView = (AdView) view.findViewById(R.id.adView);
+        //setAds();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -256,6 +233,8 @@ public class NewsFragment extends Fragment {
      */
     public void fetchNews(final int id)
     {
+        avi.show();
+
         if (mQueue == null) {
             mQueue = Volley.newRequestQueue(getContext());
         }
@@ -287,7 +266,7 @@ public class NewsFragment extends Fragment {
                             }
 
                             mAdapter.notifyDataSetChanged();
-
+                            avi.hide();
                             //mHomeNewsAdapter = new HomeNewsAdapter(homeNewsPojos, getActivity());
                             //mNewsList.setAdapter(mHomeNewsAdapter);
                             //mHomeNewsAdapter.notifyDataSetChanged();
@@ -295,6 +274,8 @@ public class NewsFragment extends Fragment {
                         }catch (Exception e)
                         {
                             e.printStackTrace();
+                            avi.hide();
+
                         }
                     }
 
@@ -309,6 +290,7 @@ public class NewsFragment extends Fragment {
                         if(homeNewsPojos.size()==0)
                         {
                             mLinearEmpty.setVisibility(View.VISIBLE);
+                            avi.hide();
                         }
                         showNoConnectionDialog(id);
                     }
@@ -343,7 +325,7 @@ public class NewsFragment extends Fragment {
         });
     }
 
-    public void setAds()
+   /* public void setAds()
     {
 
         AdRequest adRequest = new AdRequest.Builder()
@@ -380,28 +362,28 @@ public class NewsFragment extends Fragment {
 
         mAdView.loadAd(adRequest);
     }
-
+*/
     @Override
     public void onPause() {
-        if (mAdView != null) {
+       /* if (mAdView != null) {
             mAdView.pause();
-        }
+        }*/
         super.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mAdView != null) {
+     /*   if (mAdView != null) {
             mAdView.resume();
-        }
+        }*/
     }
 
     @Override
     public void onDestroy() {
-        if (mAdView != null) {
+     /*   if (mAdView != null) {
             mAdView.destroy();
-        }
+        }*/
         super.onDestroy();
     }
 }

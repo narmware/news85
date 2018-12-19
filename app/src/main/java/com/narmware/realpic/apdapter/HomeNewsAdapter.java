@@ -60,15 +60,12 @@ public class HomeNewsAdapter extends BaseAdapter
    // @BindView(R.id.share) protected ImageButton mShare;
     String mVideoId;
 
-
     public HomeNewsAdapter(ArrayList<HomeNews> mItemList, Context mContext) {
         this.mItemList = mItemList;
         this.mContext = mContext;
 
 
     }
-
-
 
     @Override
     public int getCount() {
