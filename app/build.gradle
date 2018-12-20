@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "app.bol85.android"
+        applicationId "app.news85.android"
         minSdkVersion 16
         targetSdkVersion 27
         multiDexEnabled true
@@ -17,7 +17,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    packagingOptions {
+     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE-FIREBASE.txt'
         exclude 'META-INF/NOTICE'
@@ -66,6 +66,6 @@ dependencies {
 
 }
 
-
+//apply plugin: 'com.google.gms.google-services'
 
 apply plugin: 'com.google.gms.google-services'

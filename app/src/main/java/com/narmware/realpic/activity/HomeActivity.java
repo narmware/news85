@@ -73,14 +73,14 @@ public class HomeActivity extends AppCompatActivity implements DragStateListener
                         String shareText =  bottom;
 
                         File path = ScreenshotHelper.takeScreenshot(HomeActivity.this);
-                        Intent share = new Intent(Intent.ACTION_SEND);
+                        Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE );
 
                         // If you want to share a png image only, you can do:
                         // setType("image/png"); OR for jpeg: setType("image/jpeg");
                         share.setType("image*//*");
 
                         Uri uri = Uri.fromFile(path);
-                        share.putExtra(Intent.EXTRA_STREAM, uri);
+                       // share.putExtra(Intent.EXTRA_STREAM, uri);
                         share.putExtra(Intent.EXTRA_TEXT,shareText);
 
                         startActivity(Intent.createChooser(share, "Share Now"));

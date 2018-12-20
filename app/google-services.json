@@ -1,27 +1,35 @@
 {
   "project_info": {
-    "project_number": "881825478668",
-    "firebase_url": "https://bol85-6ed4a.firebaseio.com",
-    "project_id": "bol85-6ed4a",
-    "storage_bucket": "bol85-6ed4a.appspot.com"
+    "project_number": "259264279507",
+    "firebase_url": "https://news85-df7f0.firebaseio.com",
+    "project_id": "news85-df7f0",
+    "storage_bucket": "news85-df7f0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:881825478668:android:8eb046e25bc9793c",
+        "mobilesdk_app_id": "1:259264279507:android:1f16a83e5c967ba8",
         "android_client_info": {
-          "package_name": "app.bol85.android"
+          "package_name": "app.news85.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "881825478668-bj94tv5o4e75d6b8ss7t60o6o2cgbnca.apps.googleusercontent.com",
+          "client_id": "259264279507-tgd6b6l375vjrcdf7vb66sskehu3kc27.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.news85.android",
+            "certificate_hash": "5fe71a33245fd1e9d6393ffcf12ba068a9735718"
+          }
+        },
+        {
+          "client_id": "259264279507-jg6916m82a6qvegk2p5l1o3rcsnquthf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDCK_FCjbyiXUcGAyoBTEEyT_VeZn9Zo7s"
+          "current_key": "AIzaSyDMP9AXWWAPSK-6MlCrFtZdXYcGZPSX7fM"
         }
       ],
       "services": {
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "259264279507-jg6916m82a6qvegk2p5l1o3rcsnquthf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

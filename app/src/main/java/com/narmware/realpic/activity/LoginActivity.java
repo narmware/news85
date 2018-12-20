@@ -194,7 +194,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             try {
                 personName = acct.getDisplayName();
                 email = acct.getEmail();
-                personPhotoUrl = acct.getPhotoUrl().toString();
+                //personPhotoUrl = acct.getPhotoUrl().toString();
             }catch (Exception e)
             {
                 e.printStackTrace();
@@ -211,7 +211,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                 if(personPhotoUrl==null)
                 {
-                    personPhotoUrl="http://narmware.com/kp/avatar.png";
+                    //personPhotoUrl="http://narmware.com/kp/avatar.png";
                 }
                 else {
 
@@ -221,12 +221,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 {
                     databaseAccess.setUserLogin(personName, email, personPhotoUrl);
                     registerUser();
-                    SharedPreferenceHelper.setIsLogin(true,LoginActivity.this);
-                    SharedPreferenceHelper.setUserImage(personPhotoUrl,LoginActivity.this);
-                    SharedPreferenceHelper.setUserName(email,LoginActivity.this);
-
-                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                    finish();
                 }
 
             }
@@ -295,6 +289,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         login.setPhoto(personPhotoUrl);
 
         String json_string=gson.toJson(login);
+        Log.e("Login json",json_string);
 
         HashMap<String,String> param = new HashMap();
         param.put(EndPoint.JSON_STRING,json_string);
@@ -323,6 +318,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Log.e("Login Json_string",response.toString());
                             Gson gson = new Gson();
 
+                            SharedPreferenceHelper.setIsLogin(true,LoginActivity.this);
+                            SharedPreferenceHelper.setUserImage(personPhotoUrl,LoginActivity.this);
+                            SharedPreferenceHelper.setUserName(email,LoginActivity.this);
+
+                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                            finish();
 
                         } catch (Exception e) {
 
