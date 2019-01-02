@@ -38,8 +38,6 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.gson.Gson;
-import com.narmware.realpic.Manifest;
-import com.narmware.realpic.MyApplication;
 import com.narmware.realpic.R;
 import com.narmware.realpic.fragments.IntroductionFragment;
 import com.narmware.realpic.pojo.Login;
@@ -142,11 +140,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             switch (index) {
                 case 0:
-                    return new IntroductionFragment().newInstance("title",R.drawable.bol85);
+                    return new IntroductionFragment().newInstance("title",R.drawable.news_512);
                 case 1:
-                    return new IntroductionFragment().newInstance("title1",R.drawable.bol85);
+                    return new IntroductionFragment().newInstance("title1",R.drawable.news_512);
                 case 2:
-                    return new IntroductionFragment().newInstance("title2",R.drawable.bol85);
+                    return new IntroductionFragment().newInstance("title2",R.drawable.news_512);
             }
             return null;
         }

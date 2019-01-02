@@ -19,7 +19,7 @@
         android:background="#9fece9e9">
 
         <ImageView
-            android:src="@drawable/bol85"
+            android:src="@drawable/news_512"
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:scaleType="fitXY"

@@ -68,7 +68,7 @@ public class HomeActivity extends AppCompatActivity implements DragStateListener
 
                     if(navigation.getSelectedItemId()==R.id.nav_home)
                     {
-                        String bottom = "आत्ता बातम्या वाचण्याचा एक नवीन अंदाज... ८५ शब्दामध्ये आपल्या BOL 85 ऍप वर... त्वरीत Download करा\n\n" +
+                        String bottom = "आत्ता बातम्या वाचण्याचा एक नवीन अंदाज... ८५ शब्दामध्ये आपल्या NEWS 85 ऍप वर... त्वरीत Download करा\n\n" +
                                 "https://goo.gl/FLD5wW";
                         String shareText =  bottom;
 
@@ -77,7 +77,8 @@ public class HomeActivity extends AppCompatActivity implements DragStateListener
 
                         // If you want to share a png image only, you can do:
                         // setType("image/png"); OR for jpeg: setType("image/jpeg");
-                        share.setType("image*//*");
+                        //share.setType("image*//*");
+                        share.setType("text/plain");
 
                         Uri uri = Uri.fromFile(path);
                        // share.putExtra(Intent.EXTRA_STREAM, uri);

@@ -40,10 +40,11 @@
           android:layout_width="150dp"
           android:layout_height="150dp"
           android:layout_gravity="center"
-          android:src="@drawable/bol85"/>
+          android:src="@drawable/news_512"/>
    <TextView
        android:id="@+id/txt_about"
-       android:foreground="?attr/selectableItemBackground"
+       android:layout_marginTop="20dp"
+       android:foreground="?android:attr/selectableItemBackground"
        android:layout_centerInParent="true"
        android:padding="10dp"
        android:layout_marginLeft="5dp"
@@ -58,7 +59,7 @@
 
    <TextView
        android:id="@+id/txt_privacy"
-       android:foreground="?attr/selectableItemBackground"
+       android:foreground="?android:attr/selectableItemBackground"
        android:layout_centerInParent="true"
        android:padding="10dp"
        android:layout_marginLeft="5dp"

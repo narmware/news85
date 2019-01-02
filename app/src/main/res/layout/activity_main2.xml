@@ -27,8 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:itemTextColor="@color/grey_700"
-            app:itemIconTint="@color/grey_700"
-            app:menu="@menu/navigation" />
+            app:menu="@menu/new_menu" />
 
     </RelativeLayout>
 

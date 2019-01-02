@@ -46,7 +46,7 @@ public class DetailedNewsActivity extends AppCompatActivity {
     private void init() {
         ButterKnife.bind(this);
 
-        setAds();
+        //setAds();
 
         setWebView();
         mWebView.loadUrl(news_link);
